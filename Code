@@ -1,1 +1,325 @@
+// I completed this section with my collaborative partner
+drawBackground(); 
+var money = 0;
+onEvent("btnAddMoney", "click", function( ) {
+  addMoney(); 
+});
+onEvent("btnSubtractMoney", "click", function( ) {
+  subtractMoney(); 
+});
+function addMoney() {
+  money = money + 1;
+  setText("lblMoney", money);
+  setText("lblMoneySuggest", money);
+}
+function subtractMoney() {
+  if (money > 0) {
+    money = money - 1;
+    setText("lblMoney", money);
+    setText("lblMoneySuggest", money);
+  }
+}
+
+//Draw Menu Background
+function drawBackground() {
+  penRGB(255, 165, 0, 1); 
+  dot(1000);
+  penWidth(500); 
+  for (var i = 0; i < 10; i++) {
+    penDown(); 
+    penRGB(255, 165-(i*7), 0+(i*5), 1); 
+    moveForward(-25); 
+    penUp(); 
+  }
+}
+setup();
+onEvent("btnGoBack", "click", function( ) {
+  setScreen("screenTitle");
+});
+onEvent("btnInstructions", "click", function( ) {
+  setScreen("screenInstructions");
+});
+onEvent("btnOpenMenu", "click", function() {
+  setScreen("screenMenu");
+});
+onEvent("btnHamburger", "click", function() {
+  setScreen("screenHamburger"); 
+});
+onEvent("btnFries", "click", function() {
+  setScreen("screenFries");
+});
+onEvent("btnBack1", "click", function() {
+  showDefault(); 
+  setScreen("screenMenu");
+});
+onEvent("btnBack2", "click", function() {
+  showDefault(); 
+  setScreen("screenMenu");
+});
+onEvent("btnBackTitle", "click", function() {
+  setScreen("screenTitle");
+});
+onEvent("btnOrderHamburger", "click", function() {
+  orderFoods();
+});
+onEvent("btnBackToMenu", "click", function() {
+  setScreen("screenMenu");
+  setChecked("checkboxRegularFries", false);
+  setChecked("checkboxAnimalFries", false);
+  setChecked("checkboxClassicBurger", false);
+  setChecked("checkboxLoadedBurger", false);
+});
+onEvent("btnSadBackToMenu", "click", function() {
+  setScreen("screenMenu");
+  setChecked("checkboxRegularFries", false);
+  setChecked("checkboxAnimalFries", false);
+  setChecked("checkboxClassicBurger", false);
+  setChecked("checkboxLoadedBurger", false);
+});
+onEvent("btnOrderFries", "click", function() {
+  orderFoods();
+});
+onEvent("btnRegularFriesDetails", "click", function() {
+  regularFries(); 
+});
+onEvent("btnAnimalFriesDetails", "click", function() {
+  animalFries(); 
+});
+onEvent("btnMainFries", "click", function() {
+  showDefault(); 
+});
+onEvent("btnMainBurgers", "click", function() {
+  showDefault(); 
+});
+onEvent("btnClassicBurgerDetails", "click", function() {
+  classicBurger(); 
+});
+onEvent("btnLoadedBurgerDetails", "click", function() {
+  loadedBurger(); 
+});
+onEvent("btnShowSuggestions", "click", function() {
+  setScreen("screenSuggestions"); 
+});
+onEvent("btnUpdateSuggestions", "click", function() {
+  updateSuggestions(); 
+});
+onEvent("btnBacktoMenuSuggest", "click", function() {
+  setScreen("screenMenu"); 
+});
+
+
+function setup() {
+  hideElement("lblRegularFriesDetails");
+  hideElement("lblAnimalFriesDetails");
+  hideElement("lblClassicBurgerDetails");
+  hideElement("lblLoadedBurgerDetails");
+}
+function orderFoods() {
+  if (getChecked("checkboxRegularFries")==true||getChecked("checkboxAnimalFries")==true||getChecked("checkboxClassicBurger")==true||getChecked("checkboxLoadedBurger")==true) {
+    setScreen("screenOrderPlaced");
+    hideElement("lblRegularFriesOrder");
+    hideElement("lblAnimalFriesOrder");
+    hideElement("lblClassicBurgerOrder");
+    hideElement("lblLoadedBurgerOrder");
+    if (getChecked("checkboxClassicBurger")==true) {
+      if (getChecked("checkboxLoadedBurger")==true) {
+        if (money>=9) {
+          showElement("lblClassicBurgerOrder");
+          showElement("lblLoadedBurgerOrder");
+          money = money - 9;
+          setText("lblMoney", money);
+        } else {
+          setScreen("screenCannotOrder");
+        }
+      } else {
+        if (money>=4) {
+          showElement("lblClassicBurgerOrder");
+          money = money - 4;
+          setText("lblMoney", money); 
+        } else {
+          setScreen("screenCannotOrder");
+        }
+      }
+    } else if (getChecked("checkboxLoadedBurger")==true){
+      if (getChecked("checkboxClassicBurger")==true) {
+        if (money>=9) {
+          showElement("lblClassicBurgerOrder");
+          showElement("lblLoadedBurgerOrder");
+          money = money - 9; 
+          setText("lblMoney", money); 
+        } else {
+          setScreen("screenCannotOrder");
+        }
+      } else {
+        if (money>=5) {
+          showElement("lblLoadedBurgerOrder");
+          money = money - 5; 
+          setText("lblMoney", money); 
+        } else {
+          setScreen("screenCannotOrder");
+        }
+      }
+    }
+    if (getChecked("checkboxRegularFries")==true) {
+      if (getChecked("checkboxAnimalFries")==true) {
+        if (money>=5) {
+          showElement("lblAnimalFriesOrder");
+          showElement("lblRegularFriesOrder");
+          money = money - 5; 
+          setText("lblMoney", money);
+        } else {
+          setScreen("screenCannotOrder");
+        }
+      } else {
+        if (money>=2) {
+          showElement("lblRegularFriesOrder");
+          money = money - 2; 
+          setText("lblMoney", money); 
+        } else {
+          setScreen("screenCannotOrder");
+        }
+      }
+    } else if (getChecked("checkboxAnimalFries")==true){
+      if (getChecked("checkboxRegularFries")==true) {
+        if (money>=5) {
+          showElement("lblAnimalFriesOrder");
+          showElement("lblRegularFriesOrder");
+          money = money - 5; 
+          setText("lblMoney", money); 
+        } else {
+          setScreen("screenCannotOrder");
+        }
+      } else {
+        if (money>=3) {
+          showElement("lblAnimalFriesOrder");
+          money = money - 3; 
+          setText("lblMoney", money); 
+        } else {
+          setScreen("screenCannotOrder");
+        }
+      }
+    }
+  }
+}
+function regularFries() {
+  hideElement("imgAnimalFries"); 
+  hideElement("checkboxAnimalFries"); 
+  hideElement("btnAnimalFriesDetails"); 
+  hideElement("lblAnimalFries"); 
+  showElement("lblRegularFriesDetails");
+}
+function animalFries() {
+  hideElement("imgRegularFries"); 
+  hideElement("checkboxRegularFries"); 
+  hideElement("btnRegularFriesDetails"); 
+  hideElement("lblRegularFries"); 
+  showElement("lblAnimalFriesDetails");
+}
+function classicBurger() {
+  hideElement("imgLoadedBurger"); 
+  hideElement("checkboxLoadedBurger"); 
+  hideElement("btnLoadedBurgerDetails"); 
+  hideElement("lblLoadedBurger"); 
+  showElement("lblClassicBurgerDetails");
+}
+function loadedBurger() {
+  hideElement("imgClassicBurger"); 
+  hideElement("checkboxClassicBurger"); 
+  hideElement("btnClassicBurgerDetails"); 
+  hideElement("lblClassicBurger"); 
+  showElement("lblLoadedBurgerDetails");
+}
+// I did this section independently
+function showDefault() {
+  hideElement("lblRegularFriesDetails");
+  hideElement("lblAnimalFriesDetails");
+  showElement("imgAnimalFries");
+  showElement("imgRegularFries");
+  showElement("btnRegularFriesDetails");
+  showElement("btnAnimalFriesDetails");
+  showElement("lblRegularFries");
+  showElement("lblAnimalFries");
+  showElement("checkboxRegularFries");
+  showElement("checkboxAnimalFries");
+  hideElement("lblClassicBurgerDetails");
+  hideElement("lblLoadedBurgerDetails");
+  showElement("imgLoadedBurger");
+  showElement("imgClassicBurger");
+  showElement("btnClassicBurgerDetails");
+  showElement("btnLoadedBurgerDetails");
+  showElement("lblClassicBurger");
+  showElement("lblLoadedBurger");
+  showElement("checkboxClassicBurger");
+  showElement("checkboxLoadedBurger");
+}
+function updateSuggestions() {
+  if (money>=14) {
+    setText("lblFriesSuggest", "2");
+    setText("lblBurgerSuggest", "2");
+    setText("lblFriesSuggestion", "-");
+    setText("lblBurgerSuggestion", "-");
+  }
+  else if (money>=12) {
+    setText("lblFriesSuggest", "1");
+    setText("lblBurgerSuggest", "2");
+    setText("lblFriesSuggestion", "-");
+    setText("lblBurgerSuggestion", "-");
+  }
+  else if (money==11) {
+    setText("lblFriesSuggest", "1");
+    setText("lblBurgerSuggest", "2");
+    setText("lblFriesSuggestion", "-");
+    setText("lblBurgerSuggestion", "-");
+  }
+  else if (money==10) {
+    setText("lblFriesSuggest", "1");
+    setText("lblBurgerSuggest", "2");
+    setText("lblFriesSuggestion", "2");
+    setText("lblBurgerSuggestion", "1");
+  }
+  else if (money==9) {
+    setText("lblFriesSuggest", "-");
+    setText("lblBurgerSuggest", "2");
+    setText("lblFriesSuggestion", "2");
+    setText("lblBurgerSuggestion", "1");
+  }
+  else if (money==8) {
+    setText("lblFriesSuggest", "1");
+    setText("lblBurgerSuggest", "1");
+    setText("lblFriesSuggestion", "-");
+    setText("lblBurgerSuggestion", "-");
+  }
+  else if (money==7) {
+    setText("lblFriesSuggest", "1");
+    setText("lblBurgerSuggest", "1");
+    setText("lblFriesSuggestion", "-");
+    setText("lblBurgerSuggestion", "-");
+  }
+  else if (money==6) {
+    setText("lblFriesSuggest", "1");
+    setText("lblBurgerSuggest", "1");
+    setText("lblFriesSuggestion", "-");
+    setText("lblBurgerSuggestion", "-");
+  }
+  else if (money==5) {
+    setText("lblFriesSuggest", "-");
+    setText("lblBurgerSuggest", "1");
+    setText("lblFriesSuggestion", "2");
+    setText("lblBurgerSuggestion", "-");
+  }
+  else if (money==4) {
+    setText("lblFriesSuggest", "-");
+    setText("lblBurgerSuggest", "1");
+    setText("lblFriesSuggestion", "1");
+    setText("lblBurgerSuggestion", "-");
+  }
+}
+
+// [1]Burger Shack image  - https://cdn2.iconfinder.com/data/icons/fast-food-8/128/Fast_Food-30-512.png
+// [2]Animal Fries image  - https://1.bp.blogspot.com/-rnAGSSD0Pyw/U0MNlLqT0rI/AAAAAAAAAHQ/mTnNaMftdik/s1600/animal-style-fries-secret-menu.jpg
+// [3]Regular Fries image - https://upload.wikimedia.org/wikipedia/commons/6/67/Fries_2.jpg
+// [4]Loaded Burger image - https://tmbidigitalassetsazure.blob.core.windows.net/secure/RMS/attachments/37/300x300/exps43489_SD1440074D58.jpg
+// [5]Classic Burger image- https://natashaskitchen.com/wp-content/uploads/2019/04/Best-Burger-4-500x500.jpg
+// [6]Menu screen image   - https://www.pngkey.com/png/full/44-449106_crispy-stack-burger-with-chips-french-fries.png
+// [7]Crying face image   - https://t4.rbxcdn.com/318d6945fd6ca632865178e2873b4d17
 
